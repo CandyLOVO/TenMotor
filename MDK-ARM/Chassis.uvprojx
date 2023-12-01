@@ -816,11 +816,6 @@
                 </FileArmAds>
               </FileOption>
             </File>
-            <File>
-              <FileName>user_pid.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\user_pid.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -1804,6 +1799,11 @@
         <Group>
           <GroupName>DriverLayer</GroupName>
           <Files>
+            <File>
+              <FileName>user_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\user_pid.c</FilePath>
+            </File>
             <File>
               <FileName>drv_usart.c</FileName>
               <FileType>1</FileType>

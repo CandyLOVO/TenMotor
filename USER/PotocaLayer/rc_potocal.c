@@ -3,7 +3,8 @@
 //#include "INS_task.h"
 
 //底盘电机结构体
-extern motor_info  motor[8];
+//extern motor_info  motor[8];
+extern motor_info  motor[11];
 int16_t Rotate_w;
 
 //IMU

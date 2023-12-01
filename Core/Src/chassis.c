@@ -9,7 +9,7 @@
 #include "motion_overlay.h"
 #include "channel_changes.h"
 
-extern motor_info motor[8];
+extern motor_info motor[11];
 extern RC_ctrl_t rc_ctrl;
 extern int16_t motor_angle[4]; //6020角度 在motion_overlay.c中计算 作为全局变量
 extern int16_t motor_speed[4]; //3508速度
@@ -24,6 +24,8 @@ pidTypeDef PID_angle[4];
 pidTypeDef PID_speed_3508[4];
 pidTypeDef PID_speed_6020[4];
 
+pidTypeDef PID_speed_6020_2[4];
+
 void Chassis(void const * argument)
 {
 	float PID_s[3] = {30,0.01,0};
@@ -36,6 +38,8 @@ void Chassis(void const * argument)
 		pid_init(&PID_speed_6020[i],PID_s[0],PID_s[1],PID_s[2]);
 		pid_init(&PID_angle[i],PID_a[0],PID_a[1],PID_a[2]);
 		pid_init(&PID_speed_3508[i],PID[0],PID[1],PID[2]);
+		
+		pid_init(&PID_speed_6020_2[i],PID_s[0],PID_s[1],PID_s[2]);
 	}
 	
   for(;;)

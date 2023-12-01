@@ -5,8 +5,8 @@ extern CAN_HandleTypeDef hcan2;
 
 CAN_TxHeaderTypeDef can_tx_message;
 uint8_t can_send_data[8];
-motor_info motor[8];
-motor_info motor_2[2];
+//motor_info motor[8];
+motor_info motor[11];
 int sign = 0;
 
 void CAN1_Init()
@@ -89,7 +89,7 @@ void can_cmd_send_6020(int motor1,int motor2,int motor3,int motor4) //ID:1-4 mot
 
 void can_cmd_send_6020_2(int motor1,int motor2,int motor3,int motor4) //ID:5-7 motor_2:1-2 (0x204+ID) 0x209-0x211
 {
-	uint32_t send_mail_box;
+	uint32_t send_mail;
 	can_tx_message.StdId = 0x2FF;
 	can_tx_message.IDE = CAN_ID_STD;
 	can_tx_message.RTR = CAN_RTR_DATA;
@@ -100,10 +100,10 @@ void can_cmd_send_6020_2(int motor1,int motor2,int motor3,int motor4) //ID:5-7 m
 	can_send_data[3] = motor2&0xff;
 	can_send_data[4] = (motor3>>8)&0xff;
 	can_send_data[5] = motor3&0xff;
-	can_send_data[6] = (motor4>>8)&0xff;
-	can_send_data[7] = motor4&0xff;
+	can_send_data[6] = NULL;
+	can_send_data[7] = NULL;
 	
-	HAL_CAN_AddTxMessage(&hcan2,&can_tx_message,can_send_data,&send_mail_box);
+	HAL_CAN_AddTxMessage(&hcan2,&can_tx_message,can_send_data,&send_mail);
 }
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
@@ -113,19 +113,12 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 		CAN_RxHeaderTypeDef can_rx_message;
 		uint8_t can_receive_data[8];
 	  HAL_CAN_GetRxMessage(hcan,CAN_RX_FIFO0,&can_rx_message,can_receive_data);
-		if((can_rx_message.StdId >= 0x201) && (can_rx_message.StdId <= 0x208)){
+		if((can_rx_message.StdId >= 0x201) && (can_rx_message.StdId <= 0x20B)){
 			uint8_t index = can_rx_message.StdId - 0x201;
 			motor[index].angle = ((can_receive_data[0] << 8) | can_receive_data[1]);
 			motor[index].speed = ((can_receive_data[2] << 8) | can_receive_data[3]);
 			motor[index].tor_current = ((can_receive_data[4] << 8) | can_receive_data[5]);
 			motor[index].temperture = can_receive_data[6];
-		}
-		if((can_rx_message.StdId >= 0x209) && (can_rx_message.StdId <= 0x20B)){
-			uint8_t index = can_rx_message.StdId - 0x209;
-			motor_2[index].angle = ((can_receive_data[0] << 8) | can_receive_data[1]);
-			motor_2[index].speed = ((can_receive_data[2] << 8) | can_receive_data[3]);
-			motor_2[index].tor_current = ((can_receive_data[4] << 8) | can_receive_data[5]);
-			motor_2[index].temperture = can_receive_data[6];
 		}
 	}
 

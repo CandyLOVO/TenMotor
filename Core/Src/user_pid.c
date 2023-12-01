@@ -59,7 +59,7 @@ int16_t pid_cal_a(pidTypeDef *PID,float get,float set,int16_t Max_out,int16_t Ma
 //		PID->get = PID->get;
 //	}
 	
-	if(PID->error[1] > 180){
+	if(PID->error[1] > 180){ //过零处理
 		PID->error[1] = PID->error[1] - 360;
 	}
 	else if((PID->set - PID->get) < -180){
